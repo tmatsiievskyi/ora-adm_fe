@@ -1,17 +1,15 @@
-import { Button } from 'tm-ui';
+import { useRoutes } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
+import { routes } from '@global/router';
 
-function App() {
+export function App() {
+  const content = useRoutes(routes);
+
   return (
-    <div data-testid='app-wrapper'>
-      <Button
-        buttonType='primary'
-        label='dddddd'
-        size='small'
-        spacing='large'
-      />
-      <h1>Hello, world</h1>
-    </div>
+    <>
+      <SnackbarProvider maxSnack={2} />
+      {content}
+      {/* <RouterProvider router={router} /> */}
+    </>
   );
 }
-
-export default App;

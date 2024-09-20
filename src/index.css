@@ -1,3 +1,18 @@
 @tailwind base;
+
 @tailwind components;
+
 @tailwind utilities;
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100svh;
+  height: 100%;
+  overflow: hidden;
+}
