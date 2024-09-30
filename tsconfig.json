@@ -26,7 +26,8 @@
       "@global/*": ["global/*"],
       "@/types/*": ["global/types/*"],
       "@components": ["components/index.ts"],
-      "@pages/*": ["pages/*"]
+      "@pages/*": ["pages/*"],
+      "@libs/*": ["global/libs/*"]
     }
   },
   "include": ["src"]
