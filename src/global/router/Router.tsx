@@ -43,20 +43,27 @@ const normalRoutes: RouteObject = {
 };
 
 const authRoutes: RouteObject = {
-  path: '/',
+  path: '*',
   errorElement: <ErrorPage />,
-  element: <WithLayout layout='auth' />,
   children: [
     {
-      path: '/auth/sign-in',
-      element: <WithAuthContainer type='signIn' />,
+      path: 'signIn',
+      element: (
+        <WithLayout layout='auth'>
+          <WithAuthContainer type='signIn' />
+        </WithLayout>
+      ),
     },
     {
-      path: '/auth/sign-up',
-      element: <WithAuthContainer type='signUp' />,
+      path: 'signUp',
+      element: (
+        <WithLayout layout='auth'>
+          <WithAuthContainer type='signUp' />
+        </WithLayout>
+      ),
     },
     {
-      path: '/sign-out',
+      path: 'signOut',
       element: <WithAuthContainer type='signOut' />,
     },
   ],
