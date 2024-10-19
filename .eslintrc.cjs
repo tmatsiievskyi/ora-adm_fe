@@ -24,7 +24,9 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'prettier'],
   rules: {
     'react/react-in-jsx-scope': 'off',
-    'no-console': 'warn',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'no-console': 'off',
     'react/jsx-props-no-spreading': 'off',
     'max-len': [
       'error',
@@ -39,11 +41,11 @@ module.exports = {
         prev: '*',
         next: 'return',
       },
-      {
-        blankLine: 'always',
-        prev: ['const', 'let', 'function'],
-        next: '*',
-      },
+      // {
+      //   blankLine: 'always',
+      //   prev: ['const', 'let', 'function'],
+      //   next: '*',
+      // },
       {
         blankLine: 'always',
         prev: ['*'],
@@ -54,11 +56,11 @@ module.exports = {
         prev: ['if', 'switch', 'while', 'try', 'function'],
         next: ['*'],
       },
-      {
-        blankLine: 'always',
-        prev: ['export'],
-        next: ['*'],
-      },
+      // {
+      //   blankLine: 'always',
+      //   prev: ['export'],
+      //   next: ['*'],
+      // },
     ],
     'import/prefer-default-export': 'off',
     'react/jsx-sort-props': [
