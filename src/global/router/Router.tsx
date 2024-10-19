@@ -1,72 +1,61 @@
-import { RouteObject } from 'react-router-dom';
-// import { lazy, Suspense } from 'react';
+import { WithAuthInitCheck, WithErrorBoundary } from '@global/hocs';
 import ErrorPage from '@pages/error.page';
+import { WithAuthContainer } from 'components/containers/Auth';
+import {
+  ListItem,
+  ViewItem,
+  WithDashboardItem,
+} from 'components/containers/Dashboard';
 import { WithLayout } from 'components/containers/layout';
-import { WithCollectionList } from 'components/containers/CollectionList';
-import { WithAddEditItem } from 'components/containers/AddEditItem';
-import { WithAuthContainer } from 'components/containers/Auth/Auth.hoc';
+import { createBrowserRouter } from 'react-router-dom';
 
-// const Loadable = (Component: React.ComponentType<any>) => (props: any) => (
-//   <Suspense fallback={<p>Loading</p>}>
-//     <Component {...props} />
-//   </Suspense>
-// );
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <WithErrorBoundary fallback={<ErrorPage />}>
+        <WithAuthInitCheck />
+      </WithErrorBoundary>
+    ),
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/dashboard',
+    element: <WithLayout layout='dashboard' />,
+    children: [
+      {
+        path: '/dashboard/:entity',
+        element: (
+          <WithDashboardItem>
+            <ListItem />
+          </WithDashboardItem>
+        ),
+      },
+      {
+        path: '/dashboard/:entity/view/:id',
+        element: (
+          <WithDashboardItem>
+            <ViewItem />
+          </WithDashboardItem>
+        ),
+      },
+    ],
+  },
 
-const notFoundRoute: RouteObject = {
-  path: '*',
-  element: <p>Page Not Found</p>,
-};
-
-const normalRoutes: RouteObject = {
-  path: '/',
-  errorElement: <ErrorPage />,
-  element: <WithLayout layout='main' />,
-  children: [
-    {
-      path: '/employees',
-      children: [
-        {
-          index: true,
-          element: <WithCollectionList />,
-        },
-        {
-          path: '/employees/add',
-          element: <WithAddEditItem />,
-        },
-        {
-          path: '/employees/:id',
-          element: <WithAddEditItem />,
-        },
-      ],
-    },
-  ],
-};
-
-const authRoutes: RouteObject = {
-  path: '*',
-  errorElement: <ErrorPage />,
-  children: [
-    {
-      path: 'signIn',
-      element: (
-        <WithLayout layout='auth'>
-          <WithAuthContainer type='signIn' />
-        </WithLayout>
-      ),
-    },
-    {
-      path: 'signUp',
-      element: (
-        <WithLayout layout='auth'>
-          <WithAuthContainer type='signUp' />
-        </WithLayout>
-      ),
-    },
-    {
-      path: 'signOut',
-      element: <WithAuthContainer type='signOut' />,
-    },
-  ],
-};
-
-export const routes: RouteObject[] = [notFoundRoute, authRoutes, normalRoutes];
+  {
+    path: '/signIn',
+    element: (
+      <WithLayout layout='auth'>
+        <WithAuthContainer type='signIn' />
+      </WithLayout>
+    ),
+  },
+  {
+    path: '/signUp',
+    element: (
+      <WithLayout layout='auth'>
+        <WithAuthContainer type='signUp' />
+      </WithLayout>
+    ),
+  },
+]);

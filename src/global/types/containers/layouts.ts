@@ -1,1 +1,1 @@
-export type TLayouts = 'main' | 'auth' | 'user';
+export type TLayouts = 'default' | 'dashboard' | 'auth' | 'user';
