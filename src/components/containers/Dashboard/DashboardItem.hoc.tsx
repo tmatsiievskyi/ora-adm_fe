@@ -6,9 +6,9 @@ export const WithDashboardItem: FC<PropsWithChildren> = ({ children }) => {
   const { action } = useParams();
 
   return (
-    <div>
+    <>
       <DashboardHeader action={action} />
       {children}
-    </div>
+    </>
   );
 };

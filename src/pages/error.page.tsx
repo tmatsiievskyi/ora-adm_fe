@@ -12,7 +12,6 @@ const ErrorPage: React.FC = () => {
   } else if (typeof error === 'string') {
     errorMessage = error;
   } else {
-    console.error(error);
     errorMessage = 'Unknown error';
   }
 

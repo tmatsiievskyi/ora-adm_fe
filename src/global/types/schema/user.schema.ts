@@ -18,7 +18,8 @@ export const signUpSchema = object({
     .max(64, {
       message: 'Can not be longer than 64 characters',
     })
-    .min(1, { message: 'Login is required' }),
+    .min(1, { message: 'Login is required' })
+    .min(3, { message: 'Login can not be smaller than 3 characters' }),
 
   password: string()
     .min(1, { message: 'Password is required' })
@@ -32,7 +33,6 @@ export const signUpSchema = object({
 });
 
 export type TSignInSchema = z.infer<typeof signInSchema>;
-
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
 
 export const signInDefaultValues: TSignInSchema = {

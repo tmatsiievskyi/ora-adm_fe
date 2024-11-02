@@ -1,17 +1,17 @@
 import { SnackbarProvider } from 'notistack';
 import { RouterProvider } from 'react-router-dom';
 import 'tm-ui/dist/globals.css';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from '@global/libs/tanstack';
 import { router } from '@global/router';
+import { WithReactQueryProvider } from '@global/libs/tanstack';
+import { WithAppContextProvider } from '@global/context';
 
 export function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <>
+    <WithAppContextProvider>
+      <WithReactQueryProvider>
         <SnackbarProvider maxSnack={2} />
         <RouterProvider router={router} />
-      </>
-    </QueryClientProvider>
+      </WithReactQueryProvider>
+    </WithAppContextProvider>
   );
 }

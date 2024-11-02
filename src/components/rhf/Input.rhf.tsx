@@ -10,9 +10,9 @@ import {
 } from 'react-hook-form';
 import { ErrorMessage } from './errorMessage.rhf';
 
-type TInputProps = React.ComponentProps<typeof Input>;
+export type TInputProps = React.ComponentProps<typeof Input>;
 
-type TProps<T extends FieldValues> = {
+export type TProps<T extends FieldValues> = {
   errorMessageClassName?: string;
   register?: UseFormRegister<T>;
   rules?: RegisterOptions<T>;
@@ -31,7 +31,7 @@ export const RHFInput = <T extends Record<string, unknown>>({
       control={control}
       name={name}
       render={({ field, fieldState: { error } }) => (
-        <div className='relative mb-6'>
+        <div className='relative'>
           <Input error={!!error} {...field} {...props} />
           {error && (
             <ErrorMessage className={errorMessageClassName}>

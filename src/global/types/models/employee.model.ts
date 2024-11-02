@@ -1,3 +1,5 @@
+import { TMongoDoc } from '../api';
+
 export type TEmployee = {
   firstName: string;
   lastName: string;
@@ -9,4 +11,4 @@ export type TEmployee = {
   department: string;
   illness: string[];
   achievements: string[];
-};
+} & TMongoDoc;
