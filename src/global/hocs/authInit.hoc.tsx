@@ -1,11 +1,11 @@
-import { FC } from 'react';
+import { UserLocalStorage } from '@global/libs/localStorage';
+import { FC, PropsWithChildren } from 'react';
 import { Navigate } from 'react-router-dom';
 
-export const WithAuthInitCheck: FC = () => {
-  console.log('auth checked'); // TODO: add check
-  const loggedIn = true;
+export const WithAuthInitCheck: FC<PropsWithChildren> = () => {
+  const user = UserLocalStorage.getUser();
 
-  if (!loggedIn) return <Navigate to='signIn' />;
+  if (!user) return <Navigate to='signIn' />;
 
   return <Navigate to='dashboard/complexes' />;
 };

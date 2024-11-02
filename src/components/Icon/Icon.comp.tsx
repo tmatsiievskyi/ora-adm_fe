@@ -4,7 +4,7 @@ import { TIconProps } from '@global/types';
 const tryRequire = (name: string) => {
   try {
     // eslint-disable-next-line
-    return require(`./icons/${name}-icon.tsx`).default;
+    return require(`./icons/${name}.icon.tsx`).default;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     console.log(`Wrong icon name: ${name}`);

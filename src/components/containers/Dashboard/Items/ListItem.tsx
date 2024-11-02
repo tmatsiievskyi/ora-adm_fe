@@ -1,12 +1,21 @@
 import { useEmployees } from '@global/api';
+import { ESpinnerType, WithSpinner } from 'components/Spinner';
 
 export const ListItem = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data } = useEmployees();
+  const { data: employees, isPending, error } = useEmployees();
+
+  if (isPending)
+    return (
+      <div className='h-full'>
+        <WithSpinner type={ESpinnerType.BASE} />
+      </div>
+    );
+
+  if (error) return null;
 
   return (
     <div>
-      <p>List item</p>
+      {employees?.data?.map((item) => <p key={item._id}>{item.firstName}</p>)}
     </div>
   );
 };

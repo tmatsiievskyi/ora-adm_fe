@@ -2,12 +2,16 @@ import { FC, PropsWithChildren } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Text, Button } from 'tm-ui';
 import { type TSignInSchema } from '@global/types';
-import { RHFInput } from 'components/rhf';
+import { RHFInput, RHFInputPassword } from 'components/rhf';
+import { useSignIn } from '@global/api';
 
 export const SignIn: FC<PropsWithChildren> = () => {
   const { handleSubmit } = useFormContext<TSignInSchema>();
+  const { mutationFn } = useSignIn();
 
-  const onSubmit = handleSubmit(() => {});
+  const onSubmit = handleSubmit((data) => {
+    mutationFn(data);
+  });
 
   return (
     <>
@@ -16,23 +20,29 @@ export const SignIn: FC<PropsWithChildren> = () => {
       </Text>
 
       <form className='w-full flex flex-col items-stretch ' onSubmit={onSubmit}>
-        <RHFInput<TSignInSchema>
-          compType='anim'
-          inputClassName='w-full'
-          label='Логін'
-          name='login'
-          placeholder=' '
-          wrapperClassName='max-w-full'
-        />
+        <div className='mb-6'>
+          <RHFInput<TSignInSchema>
+            compType='anim'
+            inputClassName='w-full'
+            label='Логін'
+            name='login'
+            placeholder=' '
+            wrapperClassName='max-w-full'
+          />
+        </div>
 
-        <RHFInput<TSignInSchema>
-          compType='anim'
-          inputClassName='w-full'
-          label='Пароль'
-          name='password'
-          placeholder=' '
-          wrapperClassName='max-w-full'
-        />
+        <div className='relative mb-6 text-gray-300'>
+          <RHFInputPassword
+            autoComplete='off'
+            compType='anim'
+            inputClassName='w-full'
+            label='Пароль'
+            name='password'
+            placeholder=' '
+            type='password'
+            wrapperClassName='max-w-full'
+          />
+        </div>
 
         <Button label='Логін' />
       </form>

@@ -3,7 +3,7 @@ import { FC, PropsWithChildren } from 'react';
 import { Button, Text } from 'tm-ui';
 import { Link } from 'react-router-dom';
 import { SignInProvider } from './SignIn.provider';
-import { SignOut } from './SignOut.auth';
+import { SignOut } from './SignOut.container';
 import { SignUpProvider } from './SignUp.provider';
 
 type TAuthContainerProps<T = TAuthContainers> = PropsWithChildren<{ type: T }>;

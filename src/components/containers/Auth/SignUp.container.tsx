@@ -3,11 +3,15 @@ import { useFormContext } from 'react-hook-form';
 import { Text, Button } from 'tm-ui';
 import { type TSignUpSchema } from '@global/types';
 import { RHFInput } from 'components/rhf';
+import { useSignUp } from '@global/api';
 
 export const SignUp: FC<PropsWithChildren> = () => {
   const { handleSubmit } = useFormContext<TSignUpSchema>();
+  const { mutationFn } = useSignUp();
 
-  const onSubmit = handleSubmit(() => {});
+  const onSubmit = handleSubmit((data) => {
+    mutationFn(data);
+  });
 
   return (
     <>
@@ -31,6 +35,7 @@ export const SignUp: FC<PropsWithChildren> = () => {
           label='Пароль'
           name='password'
           placeholder=' '
+          type='password'
           wrapperClassName='max-w-full'
         />
 
@@ -40,6 +45,7 @@ export const SignUp: FC<PropsWithChildren> = () => {
           label='Повторіть пароль'
           name='passwordConfirm'
           placeholder=' '
+          type='password'
           wrapperClassName='max-w-full'
         />
 
