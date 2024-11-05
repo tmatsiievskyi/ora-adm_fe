@@ -39,7 +39,7 @@ export const SidebarButton: FC<TProps> = ({ handleOpen, isOpen }) => {
 
   return (
     <div
-      className='h-[35px] border border-r-0 border-gray-100 cursor-pointer w-full flex justify-center items-center mt-auto mb-2'
+      className='h-[35px] cursor-pointer w-full flex justify-center items-center mt-auto mb-2'
       onClick={() => onArrowClick()}
     >
       <m.div animate={controls} initial='left' variants={arrowVar}>

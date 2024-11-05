@@ -33,7 +33,7 @@ export const WithAuthContainer: FC<TAuthContainerProps<TAuthContainers>> = ({
   const AuthComponent = types[type];
 
   return (
-    <div className='flex flex-col min-h-[100dvh] py-12 px-4 sm:px-6 lg:px-8   justify-center sm:mx-auto sm:w-full sm:max-w-md'>
+    <div className='flex flex-col min-h-[100dvh] py-12 px-4 sm:px-6 lg:px-8 justify-center sm:mx-auto sm:w-full sm:max-w-md'>
       <AuthComponent />
 
       <div className='relative my-4'>
@@ -42,14 +42,19 @@ export const WithAuthContainer: FC<TAuthContainerProps<TAuthContainers>> = ({
         </div>
         <div>
           <Text
-            className='max-w-fit mx-auto px-2 bg-background relative z-10'
+            className='max-w-fit mx-auto px-2 bg-bkg text-bkg-frg relative z-10'
             size='sm'
           >
             {buttonContent.dividerText}
           </Text>
         </div>
       </div>
-      <Button asChild>
+      <Button
+        asChild
+        buttonType='base'
+        className=' text-primary-frg'
+        color='primary'
+      >
         <Link to={buttonContent.to}>{buttonContent.label}</Link>
       </Button>
     </div>
