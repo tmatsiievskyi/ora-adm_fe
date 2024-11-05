@@ -13,12 +13,12 @@ export const Sidebar = ({
 }: TSidebarProps) => {
   return (
     <div
-      className={`border-r ease-in duration-300
+      className={`ease-in duration-300 shadow-lg z-10
         ${isOpen ? 'min-w-[200px] w-[200px]' : 'min-w-[60px] w-[60px]'}`}
     >
       <aside
         className={cnm(
-          'flex flex-col flex-shrink-0  w-full h-full overflow-scroll no-scrollbar',
+          'flex flex-col flex-shrink-0  w-full h-full overflow-scroll no-scrollbar bg-bkg-sec text-bkg-frg ',
           classNameWrapper,
         )}
       >

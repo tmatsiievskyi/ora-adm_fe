@@ -9,7 +9,7 @@ export const AuthLayout: FC<PropsWithChildren> = () => {
   const container = pathname.split('/')[1] as TAuthContainers;
 
   return (
-    <div className='min-h-[100dvh] bg-background font-comfortaa'>
+    <div className='min-h-[100dvh] bg-bkg font-comfortaa'>
       <WithAuthContainer type={container} />
     </div>
   );

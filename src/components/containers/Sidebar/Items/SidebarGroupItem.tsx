@@ -27,20 +27,20 @@ export const SidebarGroupItem: FC<TProps> = ({
     <li>
       <WithLink
         className={cnm(
-          `flex items-center py-2 px-4 rounded-md relative justify-start
-        
-          ${isActive ? 'bg-primary  [&>p]:text-primary-foreground [&>svg]:text-white' : 'bg-white'}
+          `flex items-start px-3 py-2 rounded-left-md relative justify-start
+           hover:bg-bkg
+          ${isActive ? 'bg-bkg [&>p]:text-primary [&>svg]:text-primary' : 'bg-bkg-sec [&>p]:text-bkg-sec-frg'}
           `,
           classNameGroupItem,
         )}
         to={href}
       >
-        <Icon height={25} name={itemName as TIconProps['name']} width={25} />
+        <Icon height={36} name={itemName as TIconProps['name']} width={36} />
         {isOpen && (
           <Text
-            className='absolute left-12 top-0 translate-y-1/2'
+            className='absolute left-14 top-1/2 leading-tight -translate-y-1/2'
             key={itemName}
-            size='sm'
+            size='base'
           >
             {localizedValue}
           </Text>

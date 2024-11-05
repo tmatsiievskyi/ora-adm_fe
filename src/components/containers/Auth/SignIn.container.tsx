@@ -15,7 +15,7 @@ export const SignIn: FC<PropsWithChildren> = () => {
 
   return (
     <>
-      <Text className='text-primary text-3xl text-center my-8' size='xl'>
+      <Text className='text-bkg-frg text-3xl text-center my-8' size='xl'>
         Залогінитись до аккаунту
       </Text>
 
@@ -23,7 +23,7 @@ export const SignIn: FC<PropsWithChildren> = () => {
         <div className='mb-6'>
           <RHFInput<TSignInSchema>
             compType='anim'
-            inputClassName='w-full'
+            inputClassName='w-full text-bkg-sec-frg bg-bkg-sec'
             label='Логін'
             name='login'
             placeholder=' '
@@ -31,11 +31,11 @@ export const SignIn: FC<PropsWithChildren> = () => {
           />
         </div>
 
-        <div className='relative mb-6 text-gray-300'>
+        <div className='relative mb-6 text-gray-300 '>
           <RHFInputPassword
             autoComplete='off'
             compType='anim'
-            inputClassName='w-full'
+            inputClassName='w-full text-bkg-sec-frg bg-bkg-sec'
             label='Пароль'
             name='password'
             placeholder=' '
@@ -44,7 +44,12 @@ export const SignIn: FC<PropsWithChildren> = () => {
           />
         </div>
 
-        <Button label='Логін' />
+        <Button
+          buttonType='base'
+          className=' text-primary-frg'
+          color='primary'
+          label='Логін'
+        />
       </form>
     </>
   );
