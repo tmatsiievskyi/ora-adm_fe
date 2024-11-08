@@ -34,10 +34,10 @@ export const SidebarGroupItem: FC<TProps> = ({
         to={href}
       >
         <Icon
-          className='block mr-2 shrink-0'
-          height={30}
+          className='block mr-3 shrink-0'
+          height={28}
           name={itemName as TIconProps['name']}
-          width={30}
+          width={28}
         />
         <Text
           className={`leading-tight origin-left duration-300 ${!isOpen && 'scale-0'}`}

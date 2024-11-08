@@ -14,7 +14,7 @@ export const useGenerateQR = () => {
     isSuccess,
     error,
     isPending,
-  } = useMutation<TBEResp<Buffer>, AppError, TGenerateQRSchema, unknown>({
+  } = useMutation<TBEResp<string>, AppError, TGenerateQRSchema, unknown>({
     mutationFn: (clienData) =>
       sendRequest(EApiMethods.POST, API_ROUTES.qr.generate, clienData),
   });
