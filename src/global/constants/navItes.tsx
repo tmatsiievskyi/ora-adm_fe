@@ -4,4 +4,5 @@ export const navItems = [
   'employee',
   'service',
   'price',
+  'qr',
 ] as const;
