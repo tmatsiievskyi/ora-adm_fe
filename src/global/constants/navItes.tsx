@@ -1,7 +1,7 @@
 export const navItems = [
-  'complexes',
-  'discounts',
-  'employees',
-  'services',
-  'subservices',
+  'complex',
+  'discount',
+  'employee',
+  'service',
+  'price',
 ] as const;
