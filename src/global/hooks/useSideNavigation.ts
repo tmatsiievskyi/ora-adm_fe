@@ -8,7 +8,7 @@ export const useSideNavigation = () => {
         ...acc,
         {
           itemName,
-          localizedValue: `${itemName}.local`,
+          label: `common.${itemName}`,
           iconComp: WithIcon,
           href: `/dashboard/${itemName}`,
         },

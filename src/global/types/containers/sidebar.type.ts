@@ -5,7 +5,7 @@ export type TNavItemsKeys = typeof navItems;
 
 export type TNavItem = {
   itemName: string;
-  localizedValue: string;
+  label: string;
   iconComp: React.FC<TIconProps>;
   href: string;
 };

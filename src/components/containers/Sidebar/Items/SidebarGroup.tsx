@@ -19,7 +19,7 @@ export const SidebarGroup = ({
   isOpen,
 }: TProps) => (
   <section>
-    <ul className={cnm('my-4', classNameGroup)}>
+    <ul className={cnm(classNameGroup)}>
       {navItems.map((item) => {
         return (
           <SidebarGroupItem
