@@ -12,6 +12,7 @@ import {
   WithDashboardItem,
 } from 'components/containers/Dashboard';
 import { WithLayout } from 'components/containers/layout';
+import { WithQrContainer } from 'components/containers/QR';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -34,6 +35,14 @@ export const router = createBrowserRouter([
       </WithAuthCheck>
     ),
     children: [
+      {
+        path: '/dashboard/qr',
+        element: (
+          <WithDashboardItem>
+            <WithQrContainer />
+          </WithDashboardItem>
+        ),
+      },
       {
         path: '/dashboard/:entity',
         element: (

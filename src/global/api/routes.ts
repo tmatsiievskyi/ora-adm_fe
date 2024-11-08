@@ -11,4 +11,7 @@ export const API_ROUTES = {
   employees: {
     all: 'api/employees',
   },
+  qr: {
+    generate: 'api/qr/generate',
+  },
 } as const;

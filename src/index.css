@@ -53,5 +53,23 @@ body,
       --destructive: 351deg 86% 61%;
       --destructive-frg: 0deg 0% 96.9%;
     }
+
+    .inputDarkModeOverride {
+      &:-webkit-autofill {
+        box-shadow: 0 0 0 30px #1c1c1d inset;
+      }
+
+      &:-webkit-autofill:hover {
+        box-shadow: 0 0 0 30px #1c1c1d inset;
+      }
+
+      &:-webkit-autofill:focus {
+        box-shadow: 0 0 0 30px #1c1c1d inset;
+      }
+
+      &:-webkit-autofill:active {
+        box-shadow: 0 0 0 30px #1c1c1d inset;
+      }
+    }
   }
 }

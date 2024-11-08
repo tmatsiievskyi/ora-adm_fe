@@ -1,4 +1,4 @@
-import { Spinner } from './Spinner.conteiner';
+import { Spinner } from './Spinner.container';
 
 export enum ESpinnerType {
   FULL_SCREEN = 'full',
