@@ -14,4 +14,7 @@ export const API_ROUTES = {
   qr: {
     generate: 'api/qr/generate',
   },
+  subservices: {
+    all: 'api/subservices',
+  },
 } as const;
