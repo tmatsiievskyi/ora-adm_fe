@@ -9,8 +9,6 @@ export const Translate = ({
 }: TTranslateProps) => {
   const { hasI18Key, text } = useTranslate(i18nKey);
 
-  console.log(hasI18Key);
-
   return (
     <Tag
       className={cnm(

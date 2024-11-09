@@ -12,3 +12,14 @@ export type TEmployee = {
   illness: string[];
   achievements: string[];
 } & TMongoDoc;
+
+export type TSubservice = {
+  label: string;
+  category: string;
+  subCategory: string;
+  outsource: boolean;
+  description: string;
+  price: number;
+  searchTags: string[];
+  index: number;
+};

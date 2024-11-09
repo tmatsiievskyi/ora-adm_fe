@@ -14,7 +14,7 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init<HttpBackendOptions>({
-    debug: true,
+    debug: false,
     fallbackLng: 'uk',
     backend: {
       loadPath: `${config.httpServer}/api/localization/json?lng=uk-UA`,

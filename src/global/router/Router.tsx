@@ -6,11 +6,8 @@ import {
 import ErrorPage from '@pages/error.page';
 import { WithAuthContainer } from 'components/containers/Auth';
 import { SignOut } from 'components/containers/Auth/SignOut.container';
-import {
-  ListItem,
-  ViewItem,
-  WithDashboardItem,
-} from 'components/containers/Dashboard';
+import { ViewItem, WithDashboardItem } from 'components/containers/Dashboard';
+import { WithDashboardFew } from 'components/containers/Dashboard/Few';
 import { WithLayout } from 'components/containers/layout';
 import { WithQrContainer } from 'components/containers/QR';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
@@ -47,7 +44,7 @@ export const router = createBrowserRouter([
         path: '/dashboard/:entity',
         element: (
           <WithDashboardItem>
-            <ListItem />
+            <WithDashboardFew />
           </WithDashboardItem>
         ),
       },
