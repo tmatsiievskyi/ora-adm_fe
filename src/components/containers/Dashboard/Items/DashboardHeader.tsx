@@ -1,20 +1,23 @@
-import { FC } from 'react';
-import { Button } from 'tm-ui';
+import { TDashboardHeaderProps } from '@global/types';
+import { Button, Text } from 'tm-ui';
 
-export const DashboardHeader: FC<{ action?: string }> = ({ action }) => {
-  let buttonText;
-
-  if (!action) {
-    buttonText = 'Create';
-  } else if (action === 'view') {
-    buttonText = 'Edit';
-  } else if (action === 'edit') {
-    buttonText = 'Save';
-  }
-
+export const DashboardHeader = ({
+  titleText,
+  buttonText,
+  buttonFn,
+}: TDashboardHeaderProps) => {
   return (
-    <div>
-      <Button className='ml-auto' label={buttonText} size='small' />
+    <div className='py-8 flex  justify-between items-center mb-6'>
+      <Text as='h3' className=' text-bkg-frg font-bold text-2xl' size='xl'>
+        {titleText}
+      </Text>
+      <Button
+        buttonType='base'
+        className='bg-bkg-frg text-bkg'
+        label={buttonText}
+        onClick={buttonFn}
+        size='small'
+      />
     </div>
   );
 };

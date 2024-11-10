@@ -4,7 +4,7 @@ import { cnm } from '@global/utils';
 
 export const Translate = ({
   i18nKey,
-  as: Tag = 'p',
+  as: Tag = 'span',
   className,
 }: TTranslateProps) => {
   const { hasI18Key, text } = useTranslate(i18nKey);
