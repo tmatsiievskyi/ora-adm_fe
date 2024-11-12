@@ -19,10 +19,10 @@ export const WithTable = <T extends { _id?: string }>({
   renderBody,
   tableCN,
   tableHeaderCN,
-  tableHeadCN,
   tableHeaderRowCN,
   tableBodyCN,
   tableRowCN,
+  tableCellCN,
 }: TDataTableProps<T>) => {
   const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
   const [sortDirection, setSortDirection] = useState<TSortDirection>(null);
@@ -40,32 +40,37 @@ export const WithTable = <T extends { _id?: string }>({
   };
 
   const defaultRenderHeader = () => (
-    <TableRow className={cnm(tableHeaderRowCN)}>
-      {columns.map((column) => (
-        <TableHead
-          className={cnm(
-            'p-2 text-left font-semibold cursor-pointer',
-            tableHeadCN,
-          )}
-          key={column.key.toString()}
-          onClick={() => handleSort(column)}
-        >
-          <span>
-            <Translate i18nKey={column.header} />
-          </span>
-        </TableHead>
-      ))}
+    <TableRow className={cnm(tableRowCN)}>
+      <>
+        {columns.map((column) => (
+          <TableHead
+            className={cnm(
+              // 'p-2 text-left font-semibold cursor-pointer',
+              tableHeaderRowCN,
+            )}
+            key={column.key.toString()}
+            onClick={() => handleSort(column)}
+          >
+            <span>
+              <Translate i18nKey={column.header} />
+            </span>
+          </TableHead>
+        ))}
+      </>
     </TableRow>
   );
 
   const defaultRenderBody = () => (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {data.length > 0 ? (
+      {data && data.length > 0 ? (
         data.map((item) => (
-          <TableRow className={cnm('border-b', tableRowCN)} key={item._id}>
+          <TableRow className={cnm(tableRowCN)} key={item._id}>
             {columns.map((column) => (
-              <TableCell key={column.key.toString()}>
+              <TableCell
+                className={cnm(tableCellCN)}
+                key={column.key.toString()}
+              >
                 {column.render
                   ? column.render(item[column.key], item)
                   : (item[column.key] as ReactNode)}
@@ -74,9 +79,9 @@ export const WithTable = <T extends { _id?: string }>({
           </TableRow>
         ))
       ) : (
-        <TableRow>
+        <TableRow className={cnm(tableRowCN)}>
           <TableCell
-            className={cnm('p-2 text-center', tableBodyCN)}
+            className={cnm('p-2 text-center', tableCellCN)}
             colSpan={columns.length}
           >
             No data available
@@ -87,9 +92,9 @@ export const WithTable = <T extends { _id?: string }>({
   );
 
   return (
-    <div className=' overflow-x-auto'>
+    <div className='overflow-x-auto'>
       <Table className={cnm('w-full border-collapse', tableCN)}>
-        <TableHeader className={cnm('w-full border-collapse', tableHeaderCN)}>
+        <TableHeader className={cnm(tableHeaderCN)}>
           {renderHeader
             ? renderHeader(columns, handleSort)
             : defaultRenderHeader()}

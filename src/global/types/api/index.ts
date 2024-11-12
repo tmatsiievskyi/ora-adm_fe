@@ -37,6 +37,11 @@ export type TUseEmployees = {
   error?: AppError | null;
 };
 
+export type TUseEmployeesProps = {
+  page: number;
+  limit: number;
+};
+
 export type TAuthTokens = {
   accessToken: string;
   refreshToken: string;
