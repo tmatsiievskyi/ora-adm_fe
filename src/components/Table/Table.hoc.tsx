@@ -12,17 +12,17 @@ import {
 } from './Table.component';
 
 export const WithTable = <T extends { _id?: string }>({
-  data = [],
+  data,
   columns,
   onSort,
   renderHeader,
   renderBody,
   tableCN,
   tableHeaderCN,
-  tableHeadCN,
   tableHeaderRowCN,
   tableBodyCN,
   tableRowCN,
+  tableCellCN,
 }: TDataTableProps<T>) => {
   const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
   const [sortDirection, setSortDirection] = useState<TSortDirection>(null);
@@ -31,41 +31,49 @@ export const WithTable = <T extends { _id?: string }>({
   const handleSort = (column: TTableColumn<T>) => {
     if (!column.sortable) return;
 
-    const isAsc = sortColumn === column.key && sortDirection === 'asc';
-    const direction = isAsc ? 'asc' : 'desc';
+    console.log(column);
 
-    setSortColumn(column.key);
-    setSortDirection(direction);
-    onSort?.(column.key, direction);
+    const isAsc = sortColumn === column.key && sortDirection === 'asc';
+    const shouldBeNull = sortColumn === column.key && sortDirection === 'desc';
+    const direction = isAsc ? 'desc' : 'asc';
+
+    setSortColumn(shouldBeNull ? null : column.key);
+    setSortDirection(shouldBeNull ? null : direction);
+    onSort?.(shouldBeNull ? null : column.key, shouldBeNull ? null : direction);
   };
 
   const defaultRenderHeader = () => (
-    <TableRow className={cnm(tableHeaderRowCN)}>
-      {columns.map((column) => (
-        <TableHead
-          className={cnm(
-            'p-2 text-left font-semibold cursor-pointer',
-            tableHeadCN,
-          )}
-          key={column.key.toString()}
-          onClick={() => handleSort(column)}
-        >
-          <span>
-            <Translate i18nKey={column.header} />
-          </span>
-        </TableHead>
-      ))}
+    <TableRow className={cnm(tableRowCN)}>
+      <>
+        {columns.map((column) => (
+          <TableHead
+            className={cnm(
+              // 'p-2 text-left font-semibold cursor-pointer',
+              tableHeaderRowCN,
+            )}
+            key={column.key.toString()}
+            onClick={() => handleSort(column)}
+          >
+            <span>
+              <Translate i18nKey={column.header} />
+            </span>
+          </TableHead>
+        ))}
+      </>
     </TableRow>
   );
 
   const defaultRenderBody = () => (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {data.length > 0 ? (
+      {data && Array.isArray(data) && data.length > 0 ? (
         data.map((item) => (
-          <TableRow className={cnm('border-b', tableRowCN)} key={item._id}>
+          <TableRow className={cnm(tableRowCN)} key={item._id}>
             {columns.map((column) => (
-              <TableCell key={column.key.toString()}>
+              <TableCell
+                className={cnm(tableCellCN)}
+                key={column.key.toString()}
+              >
                 {column.render
                   ? column.render(item[column.key], item)
                   : (item[column.key] as ReactNode)}
@@ -74,9 +82,9 @@ export const WithTable = <T extends { _id?: string }>({
           </TableRow>
         ))
       ) : (
-        <TableRow>
+        <TableRow className={cnm(tableRowCN)}>
           <TableCell
-            className={cnm('p-2 text-center', tableBodyCN)}
+            className={cnm('p-2 text-center', tableCellCN)}
             colSpan={columns.length}
           >
             No data available
@@ -87,9 +95,9 @@ export const WithTable = <T extends { _id?: string }>({
   );
 
   return (
-    <div className=' overflow-x-auto'>
+    <div className='overflow-x-auto'>
       <Table className={cnm('w-full border-collapse', tableCN)}>
-        <TableHeader className={cnm('w-full border-collapse', tableHeaderCN)}>
+        <TableHeader className={cnm(tableHeaderCN)}>
           {renderHeader
             ? renderHeader(columns, handleSort)
             : defaultRenderHeader()}

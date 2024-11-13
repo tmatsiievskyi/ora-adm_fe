@@ -22,4 +22,4 @@ export type TSubservice = {
   price: number;
   searchTags: string[];
   index: number;
-};
+} & TMongoDoc;

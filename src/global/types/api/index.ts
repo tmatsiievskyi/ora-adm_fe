@@ -26,7 +26,13 @@ export type TMutateFn<TInitData, TResultData, TError = Error> = {
 
 export type TBEResp<T> = {
   data: T | null;
-  meta: Record<string, number> | null;
+  meta: {
+    length: number;
+    took: number;
+    total: number;
+    currentPage?: number;
+    totalPages?: number;
+  } | null;
   errors: string[] | null;
   message: string | null;
 };
@@ -35,6 +41,14 @@ export type TUseEmployees = {
   data: TBEResp<TEmployee[]> | undefined;
   isPending: boolean;
   error?: AppError | null;
+};
+
+export type TUseEmployeesProps = {
+  page: number;
+  limit: number;
+  sortField?: string | null;
+  sortOrder?: string | null;
+  search: string;
 };
 
 export type TAuthTokens = {

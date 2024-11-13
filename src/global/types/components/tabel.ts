@@ -10,18 +10,22 @@ export type TTableColumn<T> = {
 };
 
 export type TDataTableProps<T extends { _id?: string }> = {
-  data?: T[];
+  data?: T[] | Record<string, T[]> | null;
   columns: TTableColumn<T>[];
-  onSort?: (key: keyof T, direction: TSortDirection) => void;
+  onSort?: (key: keyof T | null, direction: TSortDirection) => void;
   renderHeader?: (
     columns: TTableColumn<T>[],
     onSort: (column: TTableColumn<T>) => void,
   ) => ReactNode;
-  renderBody?: (data: T[], columns: TTableColumn<T>[]) => ReactNode;
+  renderBody?: (
+    data: T[] | Record<string, T[]> | null | undefined,
+    columns: TTableColumn<T>[],
+  ) => ReactNode;
   tableCN?: string;
   tableHeaderCN?: string;
   tableHeadCN?: string;
   tableHeaderRowCN?: string;
   tableBodyCN?: string;
   tableRowCN?: string;
+  tableCellCN?: string;
 };

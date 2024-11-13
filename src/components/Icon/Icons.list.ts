@@ -5,6 +5,9 @@ export const iconList = [
   'arrowLeft',
   'eye',
   'eyeSlash',
+  'chevronUp',
+  'chevronDown',
+  'chevronUpDown',
 ] as const;
 
 export type TIconNames = (typeof iconList)[number];
