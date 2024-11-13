@@ -12,7 +12,7 @@ import {
 } from './Table.component';
 
 export const WithTable = <T extends { _id?: string }>({
-  data = [],
+  data,
   columns,
   onSort,
   renderHeader,
@@ -31,12 +31,15 @@ export const WithTable = <T extends { _id?: string }>({
   const handleSort = (column: TTableColumn<T>) => {
     if (!column.sortable) return;
 
-    const isAsc = sortColumn === column.key && sortDirection === 'asc';
-    const direction = isAsc ? 'asc' : 'desc';
+    console.log(column);
 
-    setSortColumn(column.key);
-    setSortDirection(direction);
-    onSort?.(column.key, direction);
+    const isAsc = sortColumn === column.key && sortDirection === 'asc';
+    const shouldBeNull = sortColumn === column.key && sortDirection === 'desc';
+    const direction = isAsc ? 'desc' : 'asc';
+
+    setSortColumn(shouldBeNull ? null : column.key);
+    setSortDirection(shouldBeNull ? null : direction);
+    onSort?.(shouldBeNull ? null : column.key, shouldBeNull ? null : direction);
   };
 
   const defaultRenderHeader = () => (
@@ -63,7 +66,7 @@ export const WithTable = <T extends { _id?: string }>({
   const defaultRenderBody = () => (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {data && data.length > 0 ? (
+      {data && Array.isArray(data) && data.length > 0 ? (
         data.map((item) => (
           <TableRow className={cnm(tableRowCN)} key={item._id}>
             {columns.map((column) => (

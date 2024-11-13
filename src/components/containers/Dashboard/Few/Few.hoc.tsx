@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { FC } from 'react';
-import { EmployeeOption, PriceOption } from './Options';
+import { EmployeeOption, SubserviceOption } from './Options';
 
 const fewOptions = {
-  price: PriceOption,
+  price: SubserviceOption,
   employee: EmployeeOption,
 } as const satisfies Record<string, FC>;
 
