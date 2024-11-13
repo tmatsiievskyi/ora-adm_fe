@@ -14,11 +14,25 @@ import { Button, Input } from 'tm-ui';
 import { cnm } from '@global/utils';
 import { WithIcon } from 'components/Icon';
 import { useDebounce } from '@global/hooks';
+import { WithSelect } from 'components/Select';
 import { DashboardHeader } from '../../Items';
+
+const tableColumns: TTableColumn<TSubservice>[] = [
+  { key: 'label', header: 'common.table.service', sortable: false },
+  { key: 'price', header: 'common.table.price', sortable: true },
+] as const;
+
+const limitOptions = [
+  { value: 25, label: '25' },
+  { value: 50, label: '50' },
+  { value: 100, label: '100' },
+];
 
 export const SubserviceOption = () => {
   const [page, setPage] = useState(1);
-  const [limit] = useState(25); // TODO: add select and setLimit
+  const [limit, setLimit] = useState<{ value: number; label: string }>(
+    limitOptions[0],
+  ); // TODO: add select and setLimit
   const [sortCol, setSortCol] = useState<keyof TSubservice | null>(null);
   const [sortDir, setSortDir] = useState<TSortDirection>(null);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -32,7 +46,7 @@ export const SubserviceOption = () => {
   } = useSubservices({
     search: debouncedSearchValue,
     page,
-    limit,
+    limit: limit.value,
     sortField: sortCol,
     sortOrder: sortDir,
   });
@@ -48,11 +62,6 @@ export const SubserviceOption = () => {
   if (isPending) return <Spinner />;
 
   if (isError) return <p>No data</p>; // TODO: add localization
-
-  const tableColumns: TTableColumn<TSubservice>[] = [
-    { key: 'label', header: 'common.table.service', sortable: false },
-    { key: 'price', header: 'common.table.price', sortable: true },
-  ] as const;
 
   const getSortIcon = (column: TTableColumn<TSubservice>) => {
     if (!column.sortable) return null;
@@ -199,23 +208,30 @@ export const SubserviceOption = () => {
         titleText={t('common.price')}
       />
       <div className='mb-4 flex'>
-        <Input
-          // className=' shrink-0'
-          compType='default'
-          inputClassName='text-bkg-sec-frg bg-bkg-sec border-[1px] border-bkg-sec-frg/20 inputDarkModeOverride p-2 text-md w-60 shrink-0'
-          inputType='default'
-          // label='Search'
-          labelType='default'
-          onChange={(e) => onSearch(e.target.value)}
-          placeholder='Search'
-          value={searchValue}
-          wrapperClassName=''
-          wrapperType='default'
-        />
+        <div className='flex'>
+          <Input
+            compType='default'
+            inputClassName='text-bkg-sec-frg bg-bkg-sec border-[1px] border-bkg-sec-frg/20 inputDarkModeOverride p-2 text-md w-60 shrink-0'
+            inputType='default'
+            labelType='default'
+            onChange={(e) => onSearch(e.target.value)}
+            placeholder='Search'
+            value={searchValue}
+            wrapperClassName=''
+            wrapperType='default'
+          />
+          <WithSelect
+            btnCN='py-2 ml-2'
+            label='Size'
+            onChange={setLimit}
+            options={limitOptions}
+            value={limit}
+          />
+        </div>
 
         <Button
           buttonType='base'
-          className='bg-bkg text-bkg-frg border-[1px] border-bkg-sec-frg/20 ml-auto px-6'
+          className='bg-bkg text-bkg-frg border-[1px] border-bkg-sec-frg/20 ml-auto px-6 disabled:opacity-50'
           disabled={prevBtnDisabled}
           label='Prev'
           onClick={() => setPage((old) => old - 1)}
@@ -225,7 +241,7 @@ export const SubserviceOption = () => {
         </Button>
         <Button
           buttonType='base'
-          className='bg-bkg text-bkg-frg border-[1px] border-bkg-sec-frg/20 ml-2 px-6'
+          className='bg-bkg text-bkg-frg border-[1px] border-bkg-sec-frg/20 ml-2 px-6 disabled:opacity-50'
           disabled={nextBtnDisabled || isPlaceholderData}
           label='Next'
           onClick={() => {
