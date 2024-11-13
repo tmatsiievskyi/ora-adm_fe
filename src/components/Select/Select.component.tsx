@@ -1,7 +1,7 @@
 import { TSelectOption, TSelectProps } from '@global/types';
 import { cnm } from '@global/utils';
 import { WithIcon } from 'components/Icon';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from 'tm-ui';
 
 export const SelectComponent = ({
@@ -13,6 +13,21 @@ export const SelectComponent = ({
   onChange,
 }: TSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleToggle = () => setIsOpen(!isOpen);
 
@@ -22,7 +37,7 @@ export const SelectComponent = ({
   };
 
   return (
-    <div className='relative'>
+    <div className='relative' ref={selectRef}>
       <Button
         buttonType='base'
         className={cnm(
