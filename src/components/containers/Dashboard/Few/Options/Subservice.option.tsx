@@ -23,14 +23,14 @@ const tableColumns: TTableColumn<TSubservice>[] = [
 ] as const;
 
 const limitOptions = [
-  { value: 25, label: '25' },
-  { value: 50, label: '50' },
-  { value: 100, label: '100' },
+  { value: '25', label: '25' },
+  { value: '50', label: '50' },
+  { value: '100', label: '100' },
 ];
 
 export const SubserviceOption = () => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState<{ value: number; label: string }>(
+  const [limit, setLimit] = useState<{ value: string; label: string }>(
     limitOptions[0],
   ); // TODO: add select and setLimit
   const [sortCol, setSortCol] = useState<keyof TSubservice | null>(null);
@@ -46,7 +46,7 @@ export const SubserviceOption = () => {
   } = useSubservices({
     search: debouncedSearchValue,
     page,
-    limit: limit.value,
+    limit: Number(limit.value),
     sortField: sortCol,
     sortOrder: sortDir,
   });
