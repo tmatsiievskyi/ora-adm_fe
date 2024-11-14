@@ -4,3 +4,4 @@ export * from './dashboard';
 export * from './list';
 export * from './tabel';
 export * from './select';
+export * from './editableText';
