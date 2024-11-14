@@ -9,12 +9,13 @@ import {
   TableRow,
 } from 'components/Table/Table.component';
 import { Translate } from 'components/Translate';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Button, Input } from 'tm-ui';
 import { cnm } from '@global/utils';
 import { WithIcon } from 'components/Icon';
 import { useDebounce } from '@global/hooks';
 import { WithSelect } from 'components/Select';
+import { WithEditableText } from 'components/EditableText';
 import { DashboardHeader } from '../../Items';
 
 const tableColumns: TTableColumn<TSubservice>[] = [
@@ -158,9 +159,9 @@ export const SubserviceOption = () => {
       <>
         {Object.entries(data).map(([category, subservices]) => {
           return (
-            <>
+            <Fragment key={category}>
               <TableRow className=' text-center font-bold text-lg'>
-                <Translate i18nKey={`services.title.${category}`} />{' '}
+                <Translate as='td' i18nKey={`services.title.${category}`} />
               </TableRow>
               {subservices.map((subservice) => (
                 <TableRow
@@ -170,11 +171,21 @@ export const SubserviceOption = () => {
                   {columns.map((column) => {
                     if (column.key === 'price') {
                       return (
-                        <TableCell className='' key={column.key.toString()}>
-                          <p>
+                        <TableCell
+                          className='min-w-[120px]'
+                          key={column.key.toString()}
+                        >
+                          {/* <p>
                             {subservice[column.key]}{' '}
                             <Translate i18nKey='common.currency.grn' />
-                          </p>
+                          </p> */}
+                          <WithEditableText
+                            initialValue={String(subservice[column.key])}
+                            inputCN=' max-w-[100px] py-1'
+                            onSave={() => console.log('on save')}
+                            suffixText={t('common.currency.grn')}
+                            typeInput='number'
+                          />
                         </TableCell>
                       );
                     }
@@ -189,7 +200,7 @@ export const SubserviceOption = () => {
                   })}
                 </TableRow>
               ))}
-            </>
+            </Fragment>
           );
         })}
       </>

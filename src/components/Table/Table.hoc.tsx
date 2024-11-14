@@ -31,8 +31,6 @@ export const WithTable = <T extends { _id?: string }>({
   const handleSort = (column: TTableColumn<T>) => {
     if (!column.sortable) return;
 
-    console.log(column);
-
     const isAsc = sortColumn === column.key && sortDirection === 'asc';
     const shouldBeNull = sortColumn === column.key && sortDirection === 'desc';
     const direction = isAsc ? 'desc' : 'asc';
@@ -47,10 +45,7 @@ export const WithTable = <T extends { _id?: string }>({
       <>
         {columns.map((column) => (
           <TableHead
-            className={cnm(
-              // 'p-2 text-left font-semibold cursor-pointer',
-              tableHeaderRowCN,
-            )}
+            className={cnm(tableHeaderRowCN)}
             key={column.key.toString()}
             onClick={() => handleSort(column)}
           >
