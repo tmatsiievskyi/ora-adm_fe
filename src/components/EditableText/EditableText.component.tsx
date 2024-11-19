@@ -5,7 +5,7 @@ import { Input, Text } from 'tm-ui';
 
 export const EditableText = ({
   initialValue,
-  //   onSave,
+  onSave,
   inputCN,
   suffixText,
   typeInput = 'text',
@@ -20,7 +20,16 @@ export const EditableText = ({
     }
   }, [isEditing]);
 
-  const handleBlur = () => {
+  const handleBlur = async () => {
+    if (initialValue !== value) {
+      try {
+        await onSave(value);
+      } catch (error) {
+        console.log(error);
+        setValue(initialValue);
+      }
+    }
+
     setIsEditing(false);
   };
 
@@ -63,7 +72,7 @@ export const EditableText = ({
   return (
     <div onClick={() => setIsEditing(true)}>
       <Text
-        className='py-1 border-[1px] border-transparent  hover:bg-primary/40 duration-300 cursor-pointer rounded-md'
+        className='py-1 border-[1px] text-bkg-frg border-transparent  hover:bg-primary/40 duration-300 cursor-pointer rounded-md'
         size='sm'
       >
         {value}

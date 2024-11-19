@@ -16,5 +16,6 @@ export const API_ROUTES = {
   },
   subservices: {
     all: 'api/subservices',
+    updatePrice: (id: string) => `api/subservices/${id}/price`,
   },
 } as const;

@@ -9,13 +9,14 @@ import {
   TableRow,
 } from 'components/Table/Table.component';
 import { Translate } from 'components/Translate';
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { Button, Input } from 'tm-ui';
 import { cnm } from '@global/utils';
 import { WithIcon } from 'components/Icon';
 import { useDebounce } from '@global/hooks';
 import { WithSelect } from 'components/Select';
 import { WithEditableText } from 'components/EditableText';
+import { useEditSubservicePrice } from '@global/api/hooks/mutation';
 import { DashboardHeader } from '../../Items';
 
 const tableColumns: TTableColumn<TSubservice>[] = [
@@ -29,15 +30,22 @@ const limitOptions = [
   { value: '100', label: '100' },
 ];
 
+// TODO: setPAge(1) on search, sort, changeSize
+
 export const SubserviceOption = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState<{ value: string; label: string }>(
     limitOptions[0],
-  ); // TODO: add select and setLimit
+  );
   const [sortCol, setSortCol] = useState<keyof TSubservice | null>(null);
   const [sortDir, setSortDir] = useState<TSortDirection>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue, 300);
+  const {
+    mutationFn: updatePriceFn,
+    // data: updatePriceData, //TODO: handle error
+    // isPending: updatepriceIsPernding,
+  } = useEditSubservicePrice();
 
   const {
     isPending,
@@ -60,35 +68,6 @@ export const SubserviceOption = () => {
       : true;
   const { t } = useTranslation();
 
-  if (isPending) return <Spinner />;
-
-  if (isError) return <p>No data</p>; // TODO: add localization
-
-  const getSortIcon = (column: TTableColumn<TSubservice>) => {
-    if (!column.sortable) return null;
-
-    return (
-      <span>
-        <WithIcon
-          className={cnm(
-            `ml-2 duration-300 ${sortDir === 'desc' && 'opacity-20'}`,
-          )}
-          height={12}
-          name='chevronUp'
-          width={12}
-        />
-        <WithIcon
-          className={cnm(
-            `ml-2 mt-[-4px] duration-300 ${sortDir === 'asc' && 'opacity-20'}`,
-          )}
-          height={12}
-          name='chevronDown'
-          width={12}
-        />
-      </span>
-    );
-  };
-
   const handleSort = (
     key: keyof TSubservice | null,
     direction: TSortDirection | null,
@@ -97,119 +76,162 @@ export const SubserviceOption = () => {
     setSortDir(direction);
   };
 
-  const renderTableHeader = (
-    columns: TTableColumn<TSubservice>[],
-    onSort: (column: TTableColumn<TSubservice>) => void,
-  ) => {
-    return (
-      <TableRow className={cnm('')}>
-        {columns.map((column) => (
-          <TableHead
-            className={cnm('p-2 text-left font-semibold cursor-pointer')}
-            key={column.key.toString()}
-            onClick={() => onSort(column)}
-          >
-            <span className='flex items-center'>
-              <Translate className=' text-md' i18nKey={column.header} />
-              {getSortIcon(column)}
-              <span />
-            </span>
-          </TableHead>
-        ))}
-      </TableRow>
-    );
-  };
-
-  const renderTableBody = (
-    data: TSubservice[] | Record<string, TSubservice[]> | null | undefined,
-    columns: TTableColumn<TSubservice>[],
-  ) => {
-    if (!data) return <p>Not Found</p>;
-
-    if (Array.isArray(data)) {
-      return (
-        <>
-          {data.map((subservice) => (
-            <TableRow
-              className=' border-b border-bkg-frg/20 border-solid'
-              key={subservice._id}
-            >
-              {columns.map((column) => {
-                if (column.key === 'price') {
-                  return (
-                    <TableCell className='' key={column.key.toString()}>
-                      <p>{column.key}</p>
-                    </TableCell>
-                  );
-                }
-
-                return (
-                  <TableCell className='' key={column.key.toString()}>
-                    <Translate i18nKey={subservice[column.key]?.toString()} />
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          ))}
-        </>
-      );
-    }
-
-    return (
-      <>
-        {Object.entries(data).map(([category, subservices]) => {
-          return (
-            <Fragment key={category}>
-              <TableRow className=' text-center font-bold text-lg'>
-                <Translate as='td' i18nKey={`services.title.${category}`} />
-              </TableRow>
-              {subservices.map((subservice) => (
-                <TableRow
-                  className=' border-b border-bkg-frg/20 border-solid'
-                  key={subservice._id}
-                >
-                  {columns.map((column) => {
-                    if (column.key === 'price') {
-                      return (
-                        <TableCell
-                          className='min-w-[120px]'
-                          key={column.key.toString()}
-                        >
-                          {/* <p>
-                            {subservice[column.key]}{' '}
-                            <Translate i18nKey='common.currency.grn' />
-                          </p> */}
-                          <WithEditableText
-                            initialValue={String(subservice[column.key])}
-                            inputCN=' max-w-[100px] py-1'
-                            onSave={() => console.log('on save')}
-                            suffixText={t('common.currency.grn')}
-                            typeInput='number'
-                          />
-                        </TableCell>
-                      );
-                    }
-
-                    return (
-                      <TableCell className='' key={column.key.toString()}>
-                        <Translate
-                          i18nKey={subservice[column.key]?.toString()}
-                        />
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </Fragment>
-          );
-        })}
-      </>
-    );
-  };
-
   const onSearch = (e: string) => {
     setSearchValue(e);
   };
+
+  const getSortIcon = useCallback(
+    (column: TTableColumn<TSubservice>) => {
+      if (!column.sortable) return null;
+
+      return (
+        <span>
+          <WithIcon
+            className={cnm(
+              `ml-2 duration-300 ${sortDir === 'desc' && 'opacity-20'}`,
+            )}
+            height={12}
+            name='chevronUp'
+            width={12}
+          />
+          <WithIcon
+            className={cnm(
+              `ml-2 mt-[-4px] duration-300 ${sortDir === 'asc' && 'opacity-20'}`,
+            )}
+            height={12}
+            name='chevronDown'
+            width={12}
+          />
+        </span>
+      );
+    },
+    [sortDir],
+  );
+
+  const renderTableHeader = useCallback(
+    (
+      columns: TTableColumn<TSubservice>[],
+      onSort: (column: TTableColumn<TSubservice>) => void,
+    ) => {
+      return (
+        <TableRow className={cnm('')}>
+          {columns.map((column) => (
+            <TableHead
+              className={cnm('p-2 text-left font-semibold cursor-pointer')}
+              key={column.key.toString()}
+              onClick={() => onSort(column)}
+            >
+              <span className='flex items-center'>
+                <Translate className=' text-md' i18nKey={column.header} />
+                {getSortIcon(column)}
+                <span />
+              </span>
+            </TableHead>
+          ))}
+        </TableRow>
+      );
+    },
+    [getSortIcon],
+  );
+
+  const handleUpdatePrice = useCallback(
+    (id: string, price: string) => {
+      updatePriceFn({ id, price: Number(price) });
+    },
+    [updatePriceFn],
+  );
+
+  const renderTableBody = useCallback(
+    (
+      data: TSubservice[] | Record<string, TSubservice[]> | null | undefined,
+      columns: TTableColumn<TSubservice>[],
+    ) => {
+      if (!data) return <p>Not Found</p>;
+
+      if (Array.isArray(data)) {
+        return (
+          <>
+            {data.map((subservice) => (
+              <TableRow
+                className=' border-b border-bkg-frg/20 border-solid'
+                key={subservice._id}
+              >
+                {columns.map((column) => {
+                  if (column.key === 'price') {
+                    return (
+                      <TableCell className='' key={column.key.toString()}>
+                        <p>{column.key}</p>
+                      </TableCell>
+                    );
+                  }
+
+                  return (
+                    <TableCell className='' key={column.key.toString()}>
+                      <Translate i18nKey={subservice[column.key]?.toString()} />
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </>
+        );
+      }
+
+      return (
+        <>
+          {Object.entries(data).map(([category, subservices]) => {
+            return (
+              <Fragment key={category}>
+                <TableRow className=' text-center font-bold text-lg'>
+                  <Translate as='td' i18nKey={`services.title.${category}`} />
+                </TableRow>
+                {subservices.map((subservice) => (
+                  <TableRow
+                    className=' border-b border-bkg-frg/20 border-solid'
+                    key={subservice._id}
+                  >
+                    {columns.map((column) => {
+                      if (column.key === 'price') {
+                        return (
+                          <TableCell
+                            className='min-w-[120px]'
+                            key={column.key.toString()}
+                          >
+                            <WithEditableText
+                              initialValue={String(subservice[column.key])}
+                              inputCN=' max-w-[100px] py-1'
+                              onSave={(value: string) =>
+                                handleUpdatePrice(subservice._id, value)
+                              }
+                              suffixText={t('common.currency.grn')}
+                              typeInput='number'
+                            />
+                          </TableCell>
+                        );
+                      }
+
+                      return (
+                        <TableCell className='' key={column.key.toString()}>
+                          <Translate
+                            i18nKey={subservice[column.key]?.toString()}
+                          />
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </Fragment>
+            );
+          })}
+        </>
+      );
+    },
+    [t, handleUpdatePrice],
+  );
+
+  if (isPending) return <Spinner />;
+
+  if (isError) return <p>No data</p>;
 
   return (
     <div>
